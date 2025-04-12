@@ -15,6 +15,10 @@ libc = "0.2.171"
 pdfium-render = {version = "0.8.29", features = []}
 serde = "1.0.219"
 tectonic = {version = "0.15.0", features = ["native-tls-vendored"]}
+# tectonic_bridge_harfbuzz = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_harfbuzz" }
+# tectonic_bridge_graphite2 = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_graphite2" }
+
+[patch.crates-io]
 tectonic_bridge_harfbuzz = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_harfbuzz" }
 tectonic_bridge_graphite2 = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_graphite2" }
 
