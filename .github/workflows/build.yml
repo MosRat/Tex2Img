@@ -68,10 +68,10 @@ jobs:
           brew install pkg-config
 
       # 安装 vcpkg
-      - name: Install vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git ./vcpkg
-          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+      # - name: Install vcpkg
+      #   run: |
+      #     git clone https://github.com/microsoft/vcpkg.git ./vcpkg
+      #     ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
       # 运行 cargo-vcpkg
       - name: Build vcpkg dependencies
