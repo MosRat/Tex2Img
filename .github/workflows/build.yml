@@ -75,7 +75,7 @@ jobs:
           sudo xcode-select --install || true
 
       - name: Install MSVC (Windows)
-        if: matrix.os == 'windows-latest'
+        if: matrix.platform.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
 
       # 安装 vcpkg
@@ -86,19 +86,20 @@ jobs:
 
       # 运行 cargo-vcpkg
       - name: Build vcpkg dependencies
+        if: matrix.platform.os == 'windows-latest'
         run: |
           cargo install cargo-vcpkg
           cargo vcpkg build
-        env:
-          CFLAGS: "-D_GNU_SOURCE"
+        # env:
+          # CFLAGS: "-D_GNU_SOURCE"
 
       # 设置环境变量
       - name: Set environment variables
         run: |
-          echo "VCPKG_ROOT=$(pwd)/target/vcpkg" >> $GITHUB_ENV
-          echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
           echo "TECTONIC_PKGCONFIG_FORCE_SEMI_STATIC=1" >> $GITHUB_ENV
           if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
+            echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
+            echo "VCPKG_ROOT=$(pwd)/target/vcpkg" >> $GITHUB_ENV
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
             echo "RUSTFLAGS=-Ctarget-feature=+crt-static" >> $GITHUB_ENV
           fi
