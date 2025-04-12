@@ -74,9 +74,9 @@ jobs:
           brew install pkg-config
           sudo xcode-select --install || true
 
-      - name: Install MSVC (Windows)
-        if: matrix.platform.os == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
+      # - name: Install MSVC (Windows)
+      #   if: matrix.platform.os == 'windows-latest'
+      #   uses: ilammy/msvc-dev-cmd@v1
 
       # 安装 vcpkg
       # - name: Install vcpkg
@@ -88,8 +88,11 @@ jobs:
       - name: Build vcpkg dependencies
         if: matrix.platform.os == 'windows-latest'
         run: |
+
+          git clone https://github.com/microsoft/vcpkg.git "$env:USERPROFILE\.vcpkg"
+          echo "VCPKG_ROOT=$env:USERPROFILE\.vcpkg" >> $env:GITHUB_ENV
           cargo install cargo-vcpkg
-          cargo vcpkg build
+          cargo vcpkg build --no-fetch
         # env:
           # CFLAGS: "-D_GNU_SOURCE"
 
@@ -99,7 +102,6 @@ jobs:
           echo "TECTONIC_PKGCONFIG_FORCE_SEMI_STATIC=1" >> $GITHUB_ENV
           if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
             echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
-            echo "VCPKG_ROOT=$(pwd)/target/vcpkg" >> $GITHUB_ENV
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
             echo "RUSTFLAGS=-Ctarget-feature=+crt-static" >> $GITHUB_ENV
           fi
