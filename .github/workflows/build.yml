@@ -25,16 +25,16 @@ jobs:
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x64.tgz
             pdfium_lib: lib/libpdfium.so
             artifact_name: tex2img-linux-x64
-          - os: macos-latest
-            target: x86_64-apple-darwin
-            pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-x64.tgz
-            pdfium_lib: lib/libpdfium.dylib
-            artifact_name: tex2img-macos-x64
-          - os: macos-latest
-            target: aarch64-apple-darwin
-            pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-arm64.tgz
-            pdfium_lib: lib/libpdfium.dylib
-            artifact_name: tex2img-macos-arm64
+          # - os: macos-latest
+          #   target: x86_64-apple-darwin
+          #   pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-x64.tgz
+          #   pdfium_lib: lib/libpdfium.dylib
+          #   artifact_name: tex2img-macos-x64
+          # - os: macos-latest
+          #   target: aarch64-apple-darwin
+          #   pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-arm64.tgz
+          #   pdfium_lib: lib/libpdfium.dylib
+          #   artifact_name: tex2img-macos-arm64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x64.tgz
