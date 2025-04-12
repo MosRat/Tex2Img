@@ -108,13 +108,13 @@ jobs:
           fi
 
       # Linux 特定配置：设置 OpenSSL 环境
-      - name: Configure OpenSSL for Linux
-        if: matrix.platform.os == 'ubuntu-20.04'
-        run: |
-          export OPENSSL_DIR=$(pkg-config --variable=prefix openssl)
-          echo "OPENSSL_DIR=$OPENSSL_DIR" >> $GITHUB_ENV
-          echo 'CFLAGS=-fPIC' >> $GITHUB_ENV
-          echo 'CXXFLAGS=-fPIC' >> $GITHUB_ENV
+      # - name: Configure OpenSSL for Linux
+      #   if: matrix.platform.os == 'ubuntu-20.04'
+      #   run: |
+      #     export OPENSSL_DIR=$(pkg-config --variable=prefix openssl)
+      #     echo "OPENSSL_DIR=$OPENSSL_DIR" >> $GITHUB_ENV
+      #     echo 'CFLAGS=-fPIC' >> $GITHUB_ENV
+      #     echo 'CXXFLAGS=-fPIC' >> $GITHUB_ENV
 
       # 编译项目
       - name: Build project
