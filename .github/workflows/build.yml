@@ -92,7 +92,7 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git "$env:USERPROFILE\.vcpkg"
           echo "VCPKG_ROOT=$env:USERPROFILE\.vcpkg" >> $env:GITHUB_ENV
           cargo install cargo-vcpkg
-          cargo vcpkg build --no-fetch
+          cargo vcpkg build
         # env:
           # CFLAGS: "-D_GNU_SOURCE"
 
