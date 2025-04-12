@@ -20,7 +20,7 @@ links = "harfbuzz"
 exclude = ["/harfbuzz/docs/", "/harfbuzz/perf/", "/harfbuzz/test/"]
 
 [dependencies]
-tectonic_bridge_graphite2 = { path = "../bridge_graphite2", version = "0.2.1" }
+tectonic_bridge_graphite2 = { path = "../bridge_graphite2", version = "0.2.2" }
 
 [build-dependencies]
 cc = "^1.0.66"
