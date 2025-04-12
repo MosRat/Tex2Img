@@ -53,6 +53,11 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform.target }}
+      - name : Init Rust
+        run: |
+          rustup update
+          rustup toolchain install stable
+          rustup default stable
 
       # 安装 vcpkg 依赖（Linux）
       - name: Install vcpkg dependencies (Linux)
@@ -60,6 +65,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential curl zip unzip tar pkg-config libssl-dev
+          cargo install proc-macro-error-attr
 
       # 安装 vcpkg 依赖（macOS）
       - name: Install vcpkg dependencies (macOS)
