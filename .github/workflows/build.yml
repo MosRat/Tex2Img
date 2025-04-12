@@ -128,11 +128,11 @@ jobs:
           mkdir -p artifacts
           # 复制可执行文件和库
           if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
-            cp target/${{ matrix.platform.target }}/release/tex2img.exe artifacts/
-            cp target/${{ matrix.platform.target }}/release/libtex2img.dll artifacts/
+            cp target/release/tex2img.exe artifacts/
+            cp target/release/libtex2img.dll artifacts/
           else
-            cp target/${{ matrix.platform.target }}/release/tex2img artifacts/
-            cp target/${{ matrix.platform.target }}/release/liblibtex2img.so artifacts/libtex2img.so
+            cp target/release/tex2img artifacts/
+            cp target/release/liblibtex2img.so artifacts/libtex2img.so
           fi
           # 复制 pdfium 动态库
           cp pdfium/${{ matrix.platform.pdfium_lib }} artifacts/
