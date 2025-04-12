@@ -65,7 +65,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential curl zip unzip tar pkg-config libssl-dev
-          cargo install proc-macro-error-attr
 
       # 安装 vcpkg 依赖（macOS）
       - name: Install vcpkg dependencies (macOS)
