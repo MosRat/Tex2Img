@@ -13,7 +13,7 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
-  RUSTFLAGS: '-Ctarget-feature=+crt-static'  # Windows only, set globally and filtered by platform
+  # RUSTFLAGS: '-Ctarget-feature=+crt-static'  # Windows only, set globally and filtered by platform
 
 jobs:
   build:
@@ -92,6 +92,7 @@ jobs:
           echo "TECTONIC_PKGCONFIG_FORCE_SEMI_STATIC=1" >> $GITHUB_ENV
           if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
+            echo "RUSTFLAGS=-Ctarget-feature=+crt-static" >> $GITHUB_ENV
           fi
 
       # Linux 特定配置：设置 OpenSSL 环境
