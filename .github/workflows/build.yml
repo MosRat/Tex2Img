@@ -103,7 +103,6 @@ jobs:
       # 设置环境变量
       - name: Set environment variables
         run: |
-          echo "TECTONIC_PKGCONFIG_FORCE_SEMI_STATIC=1" >> $GITHUB_ENV
           if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
             echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
