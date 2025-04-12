@@ -61,7 +61,7 @@ jobs:
 
       # 安装 vcpkg 依赖（Linux）
       - name: Install vcpkg dependencies (Linux)
-        if: matrix.platform.os == 'ubuntu-latest'
+        if: matrix.platform.os == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential curl zip unzip tar pkg-config libssl-dev
@@ -71,6 +71,11 @@ jobs:
         if: contains(matrix.platform.os, 'macos')
         run: |
           brew install pkg-config
+          sudo xcode-select --install || true
+
+      - name: Install MSVC (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
 
       # 安装 vcpkg
       # - name: Install vcpkg
@@ -97,7 +102,7 @@ jobs:
 
       # Linux 特定配置：设置 OpenSSL 环境
       - name: Configure OpenSSL for Linux
-        if: matrix.platform.os == 'ubuntu-latest'
+        if: matrix.platform.os == 'ubuntu-20.04'
         run: |
           export OPENSSL_DIR=$(pkg-config --variable=prefix openssl)
           echo "OPENSSL_DIR=$OPENSSL_DIR" >> $GITHUB_ENV
