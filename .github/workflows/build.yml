@@ -127,7 +127,6 @@ jobs:
       - name: Modify tectonic_bridge_harfbuzz build.rs
         shell: bash
         run: |
-          # 查找 tectonic_bridge_harfbuzz-0.2.9 的 build.rs 文件
           if [[ "${{ matrix.platform.os }}" == "windows-latest" ]]; then
             CARGO_HOME="$USERPROFILE\\.cargo"
           else
@@ -139,11 +138,11 @@ jobs:
             exit 1
           fi
           echo "Found build.rs at: $FILE_PATH"
-          # 取消第 140 行的注释
-          sed -i '140s|//\(fs::create_dir(&dest_dir).expect("error creating dest_dir"))|\1|' "$FILE_PATH"
-          # 验证修改
+
+          sed -i '140s|// *\(fs::create_dir(&dest_dir)\.expect("error creating dest_dir");\)|\1|' "$FILE_PATH"
+
           grep "fs::create_dir(&dest_dir).expect(\"error creating dest_dir\")" "$FILE_PATH" || { echo "Failed to uncomment line"; exit 1; }
-          
+
       # 编译项目
       - name: Build project
         run: |
