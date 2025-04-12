@@ -1,0 +1,57 @@
+[package]
+edition = "2024"
+name = "tex2img"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"] # 编译为 C 兼容的动态库
+name = "libtex2img"
+
+[dependencies]
+anyhow = "1.0.97"
+clap = {version = "4.5.35", features = ["derive"]}
+image = "0.25.6"
+libc = "0.2.171"
+pdfium-render = {version = "0.8.29", features = []}
+serde = "1.0.219"
+tectonic = {version = "0.15.0", features = ["native-tls-vendored"]}
+
+[build-dependencies]
+cbindgen = "0.26"  # 用于生成 C 头文件
+
+[profile.release]
+codegen-units = 1
+incremental = false
+lto = true
+opt-level = 3
+panic = 'abort'
+
+# Copy from https://github.com/tectonic-typesetting/tectonic/blob/c2ae25ff1facd9e9cce31b48944b867773f709ec/Cargo.toml#L136
+
+[package.metadata.vcpkg]
+git = "https://github.com/microsoft/vcpkg"
+overlay-triplets-path = "dist/vcpkg-triplets"
+rev = "be1ae8e5c5bc79aac1b8f593f5554aee1cfde54f"
+
+# If other targets start using custom triplets like x86_64-pc-windows-msvc,
+# add them to crates/dep_support/src/lib.rs:new_from_vcpkg() to give users
+# guidance if they might need to set $VCPKGRS_TRIPLET.
+[package.metadata.vcpkg.target]
+aarch64-apple-darwin = {triplet = "arm64-osx", install = [
+  "freetype",
+  "harfbuzz[graphite2]",
+  "icu",
+]}
+x86_64-apple-darwin = {install = ["freetype", "harfbuzz[graphite2]", "icu"]}
+x86_64-pc-windows-msvc = {triplet = "x64-windows-static-release", install = [
+  "fontconfig",
+  "freetype",
+  "harfbuzz[graphite2]",
+  "icu",
+]}
+x86_64-unknown-linux-gnu = {install = [
+  "fontconfig",
+  "freetype",
+  "harfbuzz[graphite2]",
+  "icu",
+]}
