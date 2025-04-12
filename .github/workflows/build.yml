@@ -110,39 +110,6 @@ jobs:
             echo "RUSTFLAGS=-Ctarget-feature=+crt-static" >> $GITHUB_ENV
           fi
 
-      # Linux 特定配置：设置 OpenSSL 环境
-      # - name: Configure OpenSSL for Linux
-      #   if: matrix.platform.os == 'ubuntu-20.04'
-      #   run: |
-      #     # export OPENSSL_DIR=$(pkg-config --variable=prefix openssl)
-      #     # echo "OPENSSL_DIR=$OPENSSL_DIR" >> $GITHUB_ENV
-      #     echo 'CFLAGS=-fPIC' >> $GITHUB_ENV
-      #     echo 'CXXFLAGS=-fPIC' >> $GITHUB_ENV
-
-      # 下载依赖（触发 Cargo 下载 tectonic_bridge_harfbuzz）
-      - name: Download dependencies
-        run: cargo fetch
-
-      # 修改 tectonic_bridge_harfbuzz build.rs 文件
-      - name: Modify tectonic_bridge_harfbuzz build.rs
-        shell: bash
-        run: |
-          if [[ "${{ matrix.platform.os }}" == "windows-latest" ]]; then
-            CARGO_HOME="$USERPROFILE\\.cargo"
-          else
-            CARGO_HOME="$HOME/.cargo"
-          fi
-          FILE_PATH=$(find "$CARGO_HOME/registry/src" -type f -path "*/tectonic_bridge_harfbuzz-0.2.9/build.rs" | head -n 1)
-          if [[ -z "$FILE_PATH" ]]; then
-            echo "Error: build.rs not found"
-            exit 1
-          fi
-          echo "Found build.rs at: $FILE_PATH"
-
-          sed -i '140s|// *\(fs::create_dir(&dest_dir)\.expect("error creating dest_dir");\)|\1|' "$FILE_PATH"
-
-          grep "fs::create_dir(&dest_dir).expect(\"error creating dest_dir\")" "$FILE_PATH" || { echo "Failed to uncomment line"; exit 1; }
-
       # 编译项目
       - name: Build project
         run: |
