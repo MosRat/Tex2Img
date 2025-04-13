@@ -71,9 +71,12 @@ jobs:
       - name: Install Deps for container
         if: contains(matrix.platform.container, 'ubuntu')
         run: |
+          sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+          sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+
           apt-get update -qq && \
           apt-get install -y --no-install-recommends \
-            build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
+            ca-certificates gnupg apt-transport-https build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
 
           curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
           # 注册 Microsoft 仓库
