@@ -44,7 +44,7 @@ jobs:
             artifact_name: tex2img-windows-x64
           - os: ubuntu-20.04
             target: x86_64-unknown-linux-musl
-            vcpkg_triplet: x64-linux-static-musl
+            vcpkg_triplet: x64-linux-static
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-musl-x64.tgz
             pdfium_lib: lib/libpdfium.so
             artifact_name: tex2img-linux-musl-x64
@@ -78,10 +78,8 @@ jobs:
         run: |
           sudo apt-get update -qq && \
           sudo apt-get install -y --no-install-recommends \
-            build-essential clang lld cmake curl autoconf-archive autoconf automake \
-            pkg-config libssl-dev uuid-dev \
-            libfontconfig1-dev libharfbuzz-dev \
-            libicu-dev zlib1g-dev && \
+            build-essential clang lld cmake curl pkg-config libssl-dev autoconf-archive autoconf automake && \
+
 
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
