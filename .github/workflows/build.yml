@@ -20,7 +20,8 @@ jobs:
     strategy:
       matrix:
         platform:
-          - os: ubuntu-18.04
+          - container: ubuntu:18.04
+            runs_on: ubuntu-latest  # 或 ubuntu-22.04/ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             vcpkg_triplet: x64-linux-release
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x64.tgz
@@ -40,6 +41,15 @@ jobs:
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x64.tgz
             pdfium_lib: lib/libpdfium.so
             artifact_name: tex2img-linux-x64-24.04
+
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            vcpkg_triplet: x64-windows-static-release
+            pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x64.tgz
+            pdfium_lib: bin/pdfium.dll
+            artifact_name: tex2img-windows-x64-latest
+
+
           # - os: macos-latest
           #   target: x86_64-apple-darwin
           #   pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-x64.tgz
@@ -50,14 +60,8 @@ jobs:
           #   pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-arm64.tgz
           #   pdfium_lib: lib/libpdfium.dylib
           #   artifact_name: tex2img-macos-arm64
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            vcpkg_triplet: x64-windows-static-release
-            pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x64.tgz
-            pdfium_lib: bin/pdfium.dll
-            artifact_name: tex2img-windows-x64-latest
-
-    runs-on: ${{ matrix.platform.os }}
+    runs-on: ${{ matrix.platform.runs_on || matrix.platform.os }}
+    container: ${{ matrix.platform.container }}
 
     steps:
       # 检出代码
