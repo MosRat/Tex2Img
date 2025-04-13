@@ -110,6 +110,7 @@ jobs:
           if [ "$RUNNER_OS" = "Windows" ]; then
             VCPKG_ROOT="$USERPROFILE\.vcpkg"
             VCPKG_EXE="vcpkg.exe"
+            echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
           else
             VCPKG_ROOT="${HOME}/.vcpkg"
             VCPKG_EXE="vcpkg"
