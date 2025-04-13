@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - container: ubuntu:18.10
+          - container: ubuntu:18.04
             runs_on: ubuntu-latest  # 或 ubuntu-22.04/ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             vcpkg_triplet: x64-linux-release
@@ -64,16 +64,11 @@ jobs:
     container: ${{ matrix.platform.container }}
 
     steps:
-      # 检出代码
-      - name: Checkout repository
-        uses: actions/checkout@v4
+
 
       - name: Install Deps for container
         if: contains(matrix.platform.container, 'ubuntu')
         run: |
-          sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
-          sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
-
           apt-get update -qq && \
           apt-get install -y --no-install-recommends \
             ca-certificates gnupg apt-transport-https build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
@@ -94,6 +89,10 @@ jobs:
 
           echo "CXXFLAGS=-fPIC" >> $GITHUB_ENV
           echo "CFLAGS=-fPIC" >> $GITHUB_ENV
+          
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Install Deps for linux
         if: contains(matrix.platform.os, 'ubuntu')
