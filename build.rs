@@ -21,6 +21,6 @@
 // }
 
 fn main() {
-    println!("cargo:rustc-link-arg=-fPIC");
-    println!("cargo:rustc-link-arg=-static"); // Enforce static linking
+    // println!("cargo:rustc-link-arg=-fPIC");
+    // println!("cargo:rustc-link-arg=-static"); // Enforce static linking
 }

@@ -6,6 +6,7 @@ version = "0.1.0"
 [lib]
 crate-type = ["cdylib"] # 编译为 C 兼容的动态库
 name = "tex2img"
+path = "src/lib.rs"
 
 [[bin]]  # 显式声明可执行文件
 name = "tex2img"
@@ -29,6 +30,7 @@ incremental = false
 lto = true
 opt-level = 3
 panic = 'abort'
+strip = true
 
 # Copy from https://github.com/tectonic-typesetting/tectonic/blob/c2ae25ff1facd9e9cce31b48944b867773f709ec/Cargo.toml#L136
 

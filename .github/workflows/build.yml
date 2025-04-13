@@ -179,11 +179,7 @@ jobs:
           cp test_lib.py artifacts/
           # 创建压缩包
           cd artifacts
-          if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
-            zip -r ../${{ matrix.platform.artifact_name }}.zip .
-          else
-            tar -czf ../${{ matrix.platform.artifact_name }}.tar.gz .
-          fi
+          pwsh -Command "Compress-Archive -Path .\* -DestinationPath ..\${{ matrix.platform.artifact_name }}.zip -Force"
 
       # 上传产物
       - name: Upload artifacts
