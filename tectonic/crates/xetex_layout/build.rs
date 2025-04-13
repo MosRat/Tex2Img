@@ -115,6 +115,7 @@ fn main() {
         "-Wno-implicit-fallthrough",
         "-fno-exceptions",
         "-fno-rtti",
+        "-fPIC", // Added for position-independent code
     ];
 
     for flag in &cppflags {
@@ -185,6 +186,13 @@ fn main() {
     // OK, back to generic build rules.
 
     cppcfg.compile("libtectonic_xetex_layout.a");
+
+    // Explicitly link standard libraries dynamically
+    println!("cargo:rustc-link-lib=dylib=stdc++");
+    println!("cargo:rustc-link-lib=dylib=c");
+    println!("cargo:rustc-link-lib=dylib=uuid"); // If libuuid is used
+    println!("cargo:rustc-link-arg=-Wl,-Bdynamic"); // Ensure dynamic linking
+    println!("cargo:rustc-link-arg=-shared-libgcc"); // Dynamic libgcc
 
     deps.emit();
 

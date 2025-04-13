@@ -22,7 +22,7 @@ tectonic = { path = "./tectonic", features = ["native-tls-vendored","external-ha
 # tectonic_bridge_graphite2 = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_graphite2" }
 
 [build-dependencies]
-cbindgen = "0.26"  # 用于生成 C 头文件
+cbindgen = "0.28"  # 用于生成 C 头文件
 
 [profile.release]
 codegen-units = 1
