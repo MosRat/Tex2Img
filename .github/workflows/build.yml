@@ -154,9 +154,6 @@ jobs:
             echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld" >> $GITHUB_ENV
           fi
 
-          # if ([ "${{ matrix.platform.os }}" == "ubuntu-20.04" ]); then
-          #   echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld" >> $GITHUB_ENV
-          # fi
 
       # 编译项目
       - name: Build project
