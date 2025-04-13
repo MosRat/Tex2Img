@@ -55,11 +55,13 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform.target }}
+
       - name : Init Rust
         run: |
           rustup update
           rustup toolchain install stable
           rustup default stable
+
       # 缓存 Cargo 依赖
       - name: Cache Cargo dependencies
         uses: Swatinem/rust-cache@v2.7.8
@@ -111,10 +113,10 @@ jobs:
         run: |
           # 设置不同系统的路径和可执行文件
           if [ "$RUNNER_OS" = "Windows" ]; then
-            VCPKG_ROOT=${{ github.workspace }}\vcpkg
+            VCPKG_ROOT='${{ github.workspace }}\vcpkg'
             VCPKG_EXE="vcpkg.exe"
           else
-            VCPKG_ROOT=${{ github.workspace }}/vcpkg
+            VCPKG_ROOT='${{ github.workspace }}/vcpkg'
             VCPKG_EXE="vcpkg"
           fi
           
