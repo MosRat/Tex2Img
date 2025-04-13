@@ -70,7 +70,7 @@ jobs:
           sudo apt-get install -y build-essential curl zip unzip tar pkg-config libssl-dev uuid-dev autoconf automake autoconf-archive libfontconfig1-dev libgraphite2-dev libharfbuzz-dev libicu-dev zlib1g-dev
           echo "CXXFLAGS=-fPIC" >> $GITHUB_ENV
           echo "CFLAGS=-fPIC" >> $GITHUB_ENV
-          echo "RUSTFLAGS=-Cprefer-dynamic-Cpanic=abort" >> $GITHUB_ENV
+          echo "RUSTFLAGS=-C prefer-dynamic -C panic=abort -C link-arg=-fPIC" >> $GITHUB_ENV
 
 
 
@@ -110,7 +110,7 @@ jobs:
           if ([ "${{ matrix.platform.os }}" == "windows-latest" ]); then
             echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
-            echo "RUSTFLAGS=-Ctarget-feature=+crt-static-Crelocation-model=pic" >> $GITHUB_ENV
+            echo "RUSTFLAGS=-C target-feature=+crt-static -C relocation-model=pic" >> $GITHUB_ENV
           fi
 
       # 编译项目
