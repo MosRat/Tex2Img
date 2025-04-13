@@ -104,21 +104,31 @@ jobs:
 
       # 运行 cargo-vcpkg
       - name: Build vcpkg dependencies
+        shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
+          # 设置不同系统的路径和可执行文件
+          if [ "$RUNNER_OS" = "Windows" ]; then
             VCPKG_ROOT="$USERPROFILE\.vcpkg"
-            git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-            echo "VCPKG_ROOT=$VCPKG_ROOT" >> $GITHUB_ENV
-            "$VCPKG_ROOT\vcpkg.exe" install fontconfig freetype harfbuzz[graphite2] icu
+            VCPKG_EXE="vcpkg.exe"
           else
-            VCPKG_ROOT="$HOME/vcpkg"
-            git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
-            echo "VCPKG_ROOT=$VCPKG_ROOT" >> $GITHUB_ENV
-            "$VCPKG_ROOT/bootstrap-vcpkg.sh"
-            "$VCPKG_ROOT/vcpkg" install fontconfig freetype harfbuzz[graphite2] icu
+            VCPKG_ROOT="${HOME}/.vcpkg"
+            VCPKG_EXE="vcpkg"
           fi
-
+          
+          # Clone vcpkg
+          git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+          echo "VCPKG_ROOT=$VCPKG_ROOT" >> $GITHUB_ENV
+          
+          # Bootstrap vcpkg
+          "$VCPKG_ROOT/bootstrap-vcpkg.sh" -disableMetrics
+          
+          # 安装依赖库
+          "$VCPKG_ROOT/$VCPKG_EXE" install fontconfig freetype "harfbuzz[graphite2]" icu
+          
+          # 安装 cargo-vcpkg
           cargo install cargo-vcpkg
+          
+          # 构建依赖
           cargo vcpkg build
         # env:
           # CFLAGS: "-D_GNU_SOURCE"
