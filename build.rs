@@ -20,4 +20,7 @@
 //         .write_to_file(&output_file);
 // }
 
-fn main() {}
+fn main() {
+    println!("cargo:rustc-link-arg=-fPIC");
+    println!("cargo:rustc-link-arg=-static"); // Enforce static linking
+}
