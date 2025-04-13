@@ -68,7 +68,7 @@ jobs:
         run: |
           sudo apt-get update -qq && \
           sudo apt-get install -y --no-install-recommends \
-            build-essential clang lld cmake curl \
+            build-essential clang lld cmake curl autoconf-archive autoconf automake \
             pkg-config libssl-dev uuid-dev \
             libfontconfig1-dev libharfbuzz-dev \
             libicu-dev zlib1g-dev && \
