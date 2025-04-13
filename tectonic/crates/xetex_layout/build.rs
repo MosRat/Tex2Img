@@ -187,12 +187,12 @@ fn main() {
 
     cppcfg.compile("libtectonic_xetex_layout.a");
 
-    // Explicitly link standard libraries dynamically
-    println!("cargo:rustc-link-lib=dylib=stdc++");
-    println!("cargo:rustc-link-lib=dylib=c");
-    println!("cargo:rustc-link-lib=dylib=uuid"); // If libuuid is used
-    println!("cargo:rustc-link-arg=-Wl,-Bdynamic"); // Ensure dynamic linking
-    println!("cargo:rustc-link-arg=-shared-libgcc"); // Dynamic libgcc
+    // // Explicitly link standard libraries dynamically
+    // println!("cargo:rustc-link-lib=dylib=stdc++");
+    // println!("cargo:rustc-link-lib=dylib=c");
+    // println!("cargo:rustc-link-lib=dylib=uuid"); // If libuuid is used
+    // println!("cargo:rustc-link-arg=-Wl,-Bdynamic"); // Ensure dynamic linking
+    // println!("cargo:rustc-link-arg=-shared-libgcc"); // Dynamic libgcc
 
     deps.emit();
 
