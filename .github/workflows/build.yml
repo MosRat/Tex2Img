@@ -76,7 +76,7 @@ jobs:
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
           echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld -C target-feature=+crt-static" >> $GITHUB_ENV
-          
+
           echo "CARGO_PROFILE_RELEASE_LTO=true" >> $GITHUB_ENV
           echo "CARGO_PROFILE_RELEASE_PANIC=abort" >> $GITHUB_ENV
 
@@ -104,10 +104,20 @@ jobs:
 
       # 运行 cargo-vcpkg
       - name: Build vcpkg dependencies
-        if: matrix.platform.os == 'windows-latest'
         run: |
-          git clone https://github.com/microsoft/vcpkg.git "$env:USERPROFILE\.vcpkg"
-          echo "VCPKG_ROOT=$env:USERPROFILE\.vcpkg" >> $env:GITHUB_ENV
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            VCPKG_ROOT="$USERPROFILE\.vcpkg"
+            git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+            echo "VCPKG_ROOT=$VCPKG_ROOT" >> $GITHUB_ENV
+            "$VCPKG_ROOT\vcpkg.exe" install fontconfig freetype harfbuzz[graphite2] icu
+          else
+            VCPKG_ROOT="$HOME/vcpkg"
+            git clone https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT"
+            echo "VCPKG_ROOT=$VCPKG_ROOT" >> $GITHUB_ENV
+            "$VCPKG_ROOT/bootstrap-vcpkg.sh"
+            "$VCPKG_ROOT/vcpkg" install fontconfig freetype harfbuzz[graphite2] icu
+          fi
+
           cargo install cargo-vcpkg
           cargo vcpkg build
         # env:
@@ -120,9 +130,10 @@ jobs:
           echo "TECTONIC_PKGCONFIG_FORCE_SEMI_STATIC=1" >> $GITHUB_ENV
           echo "CARGO_PROFILE_RELEASE_PANIC=abort" >> $GITHUB_ENV
           echo "RUSTFLAGS=-C panic=abort" >> $GITHUB_ENV
+          echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
+
 
           if ([ "${{ matrix.platform.os }}" == "windows-latest" ]); then
-            echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
             echo "RUSTFLAGS=-C target-feature=+crt-static -C relocation-model=pic" >> $GITHUB_ENV
           fi
