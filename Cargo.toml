@@ -5,7 +5,11 @@ version = "0.1.0"
 
 [lib]
 crate-type = ["cdylib"] # 编译为 C 兼容的动态库
-name = "libtex2img"
+name = "tex2img"
+
+[[bin]]  # 显式声明可执行文件
+name = "tex2img"
+path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0.97"
