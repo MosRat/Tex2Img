@@ -16,11 +16,6 @@ pdfium-render = {version = "0.8.29", features = []}
 serde = "1.0.219"
 tectonic = { path = "./tectonic", features = ["native-tls-vendored","external-harfbuzz"] }
 
-
-# [patch.crates-io]
-# tectonic_bridge_harfbuzz = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_harfbuzz" }
-# tectonic_bridge_graphite2 = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master", package = "tectonic_bridge_graphite2" }
-
 [build-dependencies]
 cbindgen = "0.28"  # 用于生成 C 头文件
 

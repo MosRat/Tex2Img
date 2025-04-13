@@ -110,6 +110,7 @@ jobs:
           if [ "$RUNNER_OS" = "Windows" ]; then
             VCPKG_ROOT="$USERPROFILE\.vcpkg"
             VCPKG_EXE="vcpkg.exe"
+            VCPKGRS_TRIPLET=x64-windows-static-release
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
           else
             VCPKG_ROOT="${HOME}/.vcpkg"
@@ -174,6 +175,9 @@ jobs:
             cp target/release/tex2img.exe artifacts/
             cp target/release/libtex2img.dll artifacts/
           else
+            file target/release/liblibtex2img.so
+            file target/release/tex2img
+
             cp target/release/tex2img artifacts/
             cp target/release/liblibtex2img.so artifacts/libtex2img.so
           fi
