@@ -68,10 +68,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Deps for container
+        if: contains(matrix.platform.container, 'ubuntu')
+        run: |
+          apt-get update -qq && \
+          apt-get install -y --no-install-recommends \
+            build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
 
-      # 安装 vcpkg 依赖（Linux）
-      - name: Install vcpkg dependencies (Linux)
-        if: contains(matrix.platform.os, 'ubuntu') || contains(matrix.platform.container, 'ubuntu')
+          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+          # 注册 Microsoft 仓库
+          echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" > /etc/apt/sources.list.d/microsoft.list
+          apt-get update
+          apt-get install -y powershell
+
+
+          echo "CC=clang" >> $GITHUB_ENV
+          echo "CXX=clang++" >> $GITHUB_ENV
+          echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld" >> $GITHUB_ENV
+
+          echo "CARGO_PROFILE_RELEASE_LTO=true" >> $GITHUB_ENV
+          echo "CARGO_PROFILE_RELEASE_PANIC=abort" >> $GITHUB_ENV
+
+          echo "CXXFLAGS=-fPIC" >> $GITHUB_ENV
+          echo "CFLAGS=-fPIC" >> $GITHUB_ENV
+
+      - name: Install Deps for linux
+        if: contains(matrix.platform.os, 'ubuntu')
         run: |
           sudo apt-get update -qq && \
           sudo apt-get install -y --no-install-recommends \
@@ -86,21 +108,9 @@ jobs:
 
           echo "CXXFLAGS=-fPIC" >> $GITHUB_ENV
           echo "CFLAGS=-fPIC" >> $GITHUB_ENV
-          
-      - name: Install PowerShell
-        if: contains(matrix.platform.container, 'ubuntu')
-        run: |
-  
-          # 安装 PowerShell
-          # 导入 Microsoft 的 GPG 密钥
-          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-          # 注册 Microsoft 仓库
-          echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" > /etc/apt/sources.list.d/microsoft.list
-          # 更新并安装 PowerShell
-          sudo apt-get update
-          sudo apt-get install -y powershell
 
-      # 安装 Rust
+
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
