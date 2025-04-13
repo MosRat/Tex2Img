@@ -34,7 +34,7 @@ jobs:
             pdfium_lib: lib/libpdfium.so
             artifact_name: tex2img-linux-x64-22.04
 
-          - os: ubuntu-22.04
+          - os: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             vcpkg_triplet: x64-linux-release
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x64.tgz

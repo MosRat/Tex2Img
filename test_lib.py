@@ -12,15 +12,17 @@ class FfiError(ctypes.Structure):
 
 # 根据平台加载库
 if sys.platform == "linux":
-    lib_name = "liblibtex2img.so"
+    lib_name = "libtex2img.so"
 elif sys.platform == "darwin":
-    lib_name = "liblibtex2img.dylib"
+    lib_name = "libtex2img.dylib"
 elif sys.platform == "win32":
-    lib_name = "libtex2img.dll"
+    lib_name = "tex2img.dll"
 else:
     raise RuntimeError("Unsupported platform")
 
-lib_path = os.path.join(os.path.dirname(__file__), "target", "release", lib_name)
+lib_path = os.path.join(os.path.dirname(__file__), lib_name)
+lib_path = os.path.join(os.path.dirname(__file__), "target", "release", lib_name) if not os.path.exists(lib_path) else lib_path
+assert os.path.exists(lib_path)
 lib = ctypes.CDLL(lib_path)
 
 # 设置函数参数和返回类型
