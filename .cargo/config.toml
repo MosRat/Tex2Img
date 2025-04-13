@@ -1,6 +1,0 @@
-
-[build]
-rustflags = ["-C", "target-feature=+crt-static"]  # 或者 -crt-static 根据需求
-
-[target.x86_64-unknown-linux-gnu]
-rustflags = ["-C", "link-arg=-fPIC"]
