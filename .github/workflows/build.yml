@@ -105,10 +105,11 @@ jobs:
         shell: bash
         run: |
           echo "TECTONIC_PKGCONFIG_FORCE_SEMI_STATIC=1" >> $GITHUB_ENV
+          echo "RUSTFLAGS=-C target-feature=+crt-static -C relocation-model=pic" >> $GITHUB_ENV
           if ([ "${{ matrix.platform.os }}" == "windows-latest" ]); then
             echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
-            echo "RUSTFLAGS=-Ctarget-feature=+crt-static" >> $GITHUB_ENV
+            
           fi
 
       # 编译项目
