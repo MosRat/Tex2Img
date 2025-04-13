@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - container: ubuntu:18.04
+          - container: ubuntu:18.10
             runs_on: ubuntu-latest  # 或 ubuntu-22.04/ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             vcpkg_triplet: x64-linux-release
