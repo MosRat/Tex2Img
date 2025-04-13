@@ -14,7 +14,7 @@ image = "0.25.6"
 libc = "0.2.171"
 pdfium-render = {version = "0.8.29", features = []}
 serde = "1.0.219"
-tectonic = { git = "https://github.com/tectonic-typesetting/tectonic.git", branch = "master" }
+tectonic = { git = "https://github.com/tectonic-typesetting/tectonic.git", rev = "d5a605d797eeab07811bfb5e119e4c5b2fa1b82a" }
 
 
 # [patch.crates-io]
