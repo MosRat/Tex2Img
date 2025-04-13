@@ -42,6 +42,12 @@ jobs:
             pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x64.tgz
             pdfium_lib: bin/pdfium.dll
             artifact_name: tex2img-windows-x64
+          - os: ubuntu-20.04
+            target: x86_64-unknown-linux-musl
+            vcpkg_triplet: x64-linux-static-musl
+            pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-musl-x64.tgz
+            pdfium_lib: lib/libpdfium.so
+            artifact_name: tex2img-linux-musl-x64
 
     runs-on: ${{ matrix.platform.os }}
 
@@ -56,7 +62,7 @@ jobs:
         with:
           targets: ${{ matrix.platform.target }}
 
-      - name : Init Rust
+      - name: Init Rust
         run: |
           rustup update
           rustup toolchain install stable
@@ -87,7 +93,18 @@ jobs:
           echo "CXXFLAGS=-fPIC" >> $GITHUB_ENV
           echo "CFLAGS=-fPIC" >> $GITHUB_ENV
 
-
+      # 安装 vcpkg 依赖（musl）
+      - name: Install musl dependencies
+        if: matrix.platform.target == 'x86_64-unknown-linux-musl'
+        run: |
+          sudo apt-get update -qq && \
+          sudo apt-get install -y --no-install-recommends musl-tools && \
+          rustup target add x86_64-unknown-linux-musl
+          echo "RUSTFLAGS=-C linker=musl-gcc -C target-feature=+crt-static" >> $GITHUB_ENV
+          echo "CC=musl-gcc" >> $GITHUB_ENV
+          echo "CXX=musl-g++" >> $GITHUB_ENV
+          echo "CXXFLAGS=-static -fPIC" >> $GITHUB_ENV
+          echo "CFLAGS=-static -fPIC" >> $GITHUB_ENV
 
       # 安装 vcpkg 依赖（macOS）
       - name: Install vcpkg dependencies (macOS)
@@ -103,7 +120,7 @@ jobs:
         with:
           pkgs: fontconfig freetype "harfbuzz[graphite2]" icu
           triplet: ${{ matrix.platform.vcpkg_triplet }}
-          cache-key: ${{ matrix.platform.os }}
+          cache-key: ${{ matrix.platform.os }}-${{ matrix.platform.target }}
           revision: "be1ae8e5c5bc79aac1b8f593f5554aee1cfde54f"
           token: ${{ github.token }}
           github-binarycache: true
@@ -135,20 +152,23 @@ jobs:
           echo "CARGO_PROFILE_RELEASE_PANIC=abort" >> $GITHUB_ENV
           echo "TECTONIC_DEP_BACKEND=vcpkg" >> $GITHUB_ENV
 
-
           if ([ "${{ matrix.platform.os }}" == "windows-latest" ]); then
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
             echo "RUSTFLAGS=-C target-feature=+crt-static" >> $GITHUB_ENV
           fi
 
-          if ([ "${{ matrix.platform.os }}" == "ubuntu-20.04" ]); then
+          if ([ "${{ matrix.platform.os }}" == "ubuntu-20.04" ] && [ "${{ matrix.platform.target }}" != "x86_64-unknown-linux-musl" ]); then
             echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld" >> $GITHUB_ENV
+          fi
+
+          if ([ "${{ matrix.platform.target }}" == "x86_64-unknown-linux-musl" ]); then
+            echo "VCPKGRS_TRIPLET=x64-linux-static-musl" >> $GITHUB_ENV
           fi
 
       # 编译项目
       - name: Build project
         run: |
-          cargo build --release 
+          cargo build --release --target ${{ matrix.platform.target }}
 
       # 下载 pdfium
       - name: Download pdfium
@@ -167,11 +187,11 @@ jobs:
             cp target/release/tex2img.exe artifacts/
             cp target/release/tex2img.dll artifacts/
           else
-            file target/release/libtex2img.so
-            file target/release/tex2img
+            file target/${{ matrix.platform.target }}/release/libtex2img.so
+            file target/${{ matrix.platform.target }}/release/tex2img
 
-            cp target/release/tex2img artifacts/
-            cp target/release/libtex2img.so artifacts/libtex2img.so
+            cp target/${{ matrix.platform.target }}/release/tex2img artifacts/
+            cp target/${{ matrix.platform.target }}/release/libtex2img.so artifacts/libtex2img.so
           fi
           # 复制 pdfium 动态库
           cp pdfium/${{ matrix.platform.pdfium_lib }} artifacts/
