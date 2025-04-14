@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - container: ubuntu:18.04
+          - container: debian:10
             runs_on: ubuntu-latest  # 或 ubuntu-22.04/ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             vcpkg_triplet: x64-linux-release
@@ -67,22 +67,17 @@ jobs:
 
     steps:
       - name: Install Deps for container
-        if: contains(matrix.platform.container, 'ubuntu')
+        if: contains(matrix.platform.container, 'debian')
         run: |
           apt-get update -qq && \
           apt-get install -y --no-install-recommends \
             ca-certificates gnupg apt-transport-https build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
 
           curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-          echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" > /etc/apt/sources.list.d/microsoft.list
+          echo "deb [arch=amd64] https://packages.microsoft.com/debian/10/prod buster main" > /etc/apt/sources.list.d/microsoft.list
           apt-get update
           apt-get install -y powershell
 
-          # curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-          # apt install -y nodejs
-          # # mkdir -p /__e/node20/bin
-          # # ln -s $(which node) /__e/node20/bin/node
-          # echo "PATH=$(which node):$PATH" >> $GITHUB_ENV
 
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
@@ -96,7 +91,7 @@ jobs:
           
       # 检出代码
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
 
 
@@ -230,7 +225,7 @@ jobs:
 
       # 上传产物
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.platform.artifact_name }}
           path: ${{ matrix.platform.artifact_name }}.*
