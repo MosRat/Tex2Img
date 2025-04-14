@@ -96,7 +96,7 @@ jobs:
           
       # 检出代码
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
 
 
@@ -230,7 +230,7 @@ jobs:
 
       # 上传产物
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.platform.artifact_name }}
           path: ${{ matrix.platform.artifact_name }}.*
