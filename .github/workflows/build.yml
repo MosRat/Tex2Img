@@ -140,7 +140,7 @@ jobs:
         if: contains(matrix.platform.container, 'debian')
         run: |
           mkdir -p /home/runner/work/Tex2Img/
-          ln -s /__w/ /home/runner/work/Tex2Img/Tex2Img
+          ln -s /__w/Tex2Img/Tex2Img /home/runner/work/Tex2Img/Tex2Img
           ls /home/runner/work/Tex2Img/Tex2Img
 
       # 运行 cargo-vcpkg
