@@ -194,7 +194,7 @@ jobs:
           fi
 
           if ([ "${{ matrix.platform.container }}" == "debian:10" ]); then
-            echo "RUSTFLAGS= -C link-arg=-Wl,--no-gnu-unique" >> $GITHUB_ENV
+            echo "RUSTFLAGS=" >> $GITHUB_ENV
           fi
 
 
