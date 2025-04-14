@@ -68,7 +68,7 @@ jobs:
         run: |
           apt-get update -qq && \
           apt-get install -y --no-install-recommends \
-            ca-certificates gnupg apt-transport-https build-essential cmake git wget zip unzip tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
+            ca-certificates gnupg apt-transport-https build-essential cmake git wget zip unzip tar curl clang lld python3 autoconf automake autoconf-archive pkg-config libssl-dev ninja-build &&\
 
           curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
           echo "deb [arch=amd64] https://packages.microsoft.com/debian/10/prod buster main" > /etc/apt/sources.list.d/microsoft.list
