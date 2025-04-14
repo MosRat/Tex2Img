@@ -133,12 +133,26 @@ if __name__ == "__main__":
     # print(f"Converted {pages} pages from PDF")
     
     # 示例2: 从 LaTeX 生成
+    formula = r"""\[
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\]"""
     latex_code = r"""
-    \documentclass{article}
-    \begin{document}
-    Hello, world!
-    \end{document}
-    """
+\documentclass[multi={mathpage},border=2pt, varwidth]{standalone}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{fontspec}
+\usepackage{ctex}
+
+
+\usepackage{xcolor} % 白底黑字增强对比度
+\newenvironment{mathpage}{}{}
+\begin{document}
+    """ + fr"""
     
-    pages = latex_to_png(latex_code, "latex_output", "output_images")
+    \begin{{mathpage}}
+    {formula}
+    \end{{mathpage}}
+    
+    """ * 100 + r"\end{document}"
+    
+    pages = latex_to_png(latex_code, "formula", "output_images")
     print(f"Generated {pages} pages from LaTeX")

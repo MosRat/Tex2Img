@@ -27,6 +27,13 @@ jobs:
             pdfium_lib: lib/libpdfium.so
             artifact_name: tex2img-linux-x64-18.04
 
+          - os: ubuntu-20.04
+            target: x86_64-unknown-linux-gnu
+            vcpkg_triplet: x64-linux-release
+            pdfium_url: https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x64.tgz
+            pdfium_lib: lib/libpdfium.so
+            artifact_name: tex2img-linux-x64-20.04
+
           - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             vcpkg_triplet: x64-linux-release
@@ -130,8 +137,6 @@ jobs:
           cache-all-crates: false
 
 
-
-
       # 安装 vcpkg 依赖（macOS）
       - name: Install vcpkg dependencies (macOS)
         if: contains(matrix.platform.os, 'macos')
@@ -201,7 +206,7 @@ jobs:
       # 编译项目
       - name: Build project
         run: |
-          cargo build --release 
+          cargo build --release --lib
 
       # 下载 pdfium
       - name: Download pdfium
@@ -217,13 +222,9 @@ jobs:
           mkdir -p artifacts
           # 复制可执行文件和库
           if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
-            cp target/release/tex2img.exe artifacts/
             cp target/release/tex2img.dll artifacts/
           else
             file target/release/libtex2img.so
-            file target/release/tex2img
-
-            cp target/release/tex2img artifacts/
             cp target/release/libtex2img.so artifacts/libtex2img.so
           fi
           # 复制 pdfium 动态库

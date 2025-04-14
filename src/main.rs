@@ -124,19 +124,11 @@ fn render_to_png(latex: &str, name: &str, path: &PathBuf, width: u32) -> Result<
 fn main() -> Result<()> {
     let cli: Cli = Cli::parse();
     render_to_png(
-        &(format!(
-            "{}{}{}",
-            r#"\begin{mathpage}
-            "#, &cli.latex, r#"
-            \end{mathpage}
-            "#
-        )
-        .repeat(100)),
+        &cli.latex,
         &cli.name,
         &cli.output,
         cli.width,
     )?;
 
-    // eprintln!("Render to {:?}",&cli.output.join(&cli.name));
     Ok(())
 }
