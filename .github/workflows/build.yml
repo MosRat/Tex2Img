@@ -125,6 +125,9 @@ jobs:
       # 缓存 Cargo 依赖
       - name: Cache Cargo dependencies
         uses: Swatinem/rust-cache@v2.7.8
+        with:
+          key: ${{ matrix.platform.runs_on || matrix.platform.os }}
+          cache-all-crates: false
 
 
 
@@ -187,7 +190,7 @@ jobs:
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
             echo "RUSTFLAGS=-C target-feature=+crt-static" >> $GITHUB_ENV
           else
-            echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld link-arg=-Wl,--no-gnu-unique" >> $GITHUB_ENV
+            echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld -C link-arg=-Wl,--no-gnu-unique" >> $GITHUB_ENV
           fi
 
 
