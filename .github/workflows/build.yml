@@ -74,14 +74,15 @@ jobs:
             ca-certificates gnupg apt-transport-https build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
 
           curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-          # 注册 Microsoft 仓库
           echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" > /etc/apt/sources.list.d/microsoft.list
           apt-get update
           apt-get install -y powershell
 
-          echo "ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true" >> $GITHUB_ENV
-
-
+          curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+          apt install -y nodejs
+          rm -rf /__e/node20
+          echo "PATH=$(which node):$PATH" >> $GITHUB_ENV
+          
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
           echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld" >> $GITHUB_ENV
