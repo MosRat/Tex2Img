@@ -12,8 +12,10 @@ permissions:
   contents: write  # 允许创建 release 和上传资产
 
 env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+  ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
+  ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
   CARGO_TERM_COLOR: always
-  # RUSTFLAGS: '-Ctarget-feature=+crt-static'  # Windows only, set globally and filtered by platform
 
 jobs:
   build:
@@ -92,11 +94,8 @@ jobs:
           
       # 检出代码
       - name: Checkout repository
-        uses: actions/checkout@v3
-        env:
-          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-          ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
-          ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+        uses: actions/checkout@v4
+
 
 
       - name: Install Deps for linux
