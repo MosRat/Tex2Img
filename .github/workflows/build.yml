@@ -80,9 +80,8 @@ jobs:
 
           curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
           apt install -y nodejs
-          rm -rf /__e/node20
-          mkdir -p /__e/node20/bin
-          ln -s $(which node) /__e/node20/bin/node
+          # mkdir -p /__e/node20/bin
+          # ln -s $(which node) /__e/node20/bin/node
           echo "PATH=$(which node):$PATH" >> $GITHUB_ENV
 
           echo "CC=clang" >> $GITHUB_ENV
