@@ -190,7 +190,11 @@ jobs:
             echo "VCPKGRS_TRIPLET=x64-windows-static-release" >> $GITHUB_ENV
             echo "RUSTFLAGS=-C target-feature=+crt-static" >> $GITHUB_ENV
           else
-            echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld -C link-arg=-Wl,--no-gnu-unique" >> $GITHUB_ENV
+            echo "RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld" >> $GITHUB_ENV
+          fi
+
+          if ([ "${{ matrix.platform.container }}" == "debian:10" ]); then
+            echo "RUSTFLAGS= -C link-arg=-Wl,--no-gnu-unique" >> $GITHUB_ENV
           fi
 
 
