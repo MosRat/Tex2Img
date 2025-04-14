@@ -100,7 +100,7 @@ jobs:
         run: |
           sudo apt-get update -qq && \
           sudo apt-get install -y --no-install-recommends \
-            build-essential cmake git wget tar curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
+            build-essential cmake git wget tar zip unzip curl clang lld autoconf automake  autoconf-archive pkg-config libssl-dev ninja-build &&\
 
           echo "CC=clang" >> $GITHUB_ENV
           echo "CXX=clang++" >> $GITHUB_ENV
