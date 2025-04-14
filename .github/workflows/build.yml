@@ -12,9 +12,6 @@ permissions:
   contents: write  # 允许创建 release 和上传资产
 
 env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-  ACTIONS_RUNNER_FORCED_INTERNAL_NODE_VERSION: node16
-  ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
   CARGO_TERM_COLOR: always
 
 jobs:
@@ -139,6 +136,12 @@ jobs:
           brew install pkg-config
           sudo xcode-select --install || true
 
+      - name: Fix workspace dir for container
+        if: contains(matrix.platform.container, 'debian')
+        run: |
+          mkdir -p /home/runner/work/Tex2Img/
+          ln -s /__w/ /home/runner/work/Tex2Img/Tex2Img/
+
       # 运行 cargo-vcpkg
       - name: Setup vcpkg
         uses: johnwason/vcpkg-action@v6
@@ -146,7 +149,7 @@ jobs:
         with:
           pkgs: fontconfig freetype "harfbuzz[graphite2]" icu
           triplet: ${{ matrix.platform.vcpkg_triplet }}
-          cache-key: ${{ matrix.platform.os }}
+          cache-key: ${{ matrix.platform.container || matrix.platform.os }}
           revision: "be1ae8e5c5bc79aac1b8f593f5554aee1cfde54f"
           token: ${{ github.token }}
           github-binarycache: true
