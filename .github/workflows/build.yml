@@ -148,7 +148,7 @@ jobs:
         uses: johnwason/vcpkg-action@v6
         id: vcpkg
         with:
-          pkgs: fontconfig freetype "harfbuzz[graphite2]" icu
+          pkgs: fontconfig freetype "harfbuzz[graphite2]" icu openssl
           triplet: ${{ matrix.platform.vcpkg_triplet }}
           cache-key: ${{ matrix.platform.container || matrix.platform.os }}
           revision: "be1ae8e5c5bc79aac1b8f593f5554aee1cfde54f"
